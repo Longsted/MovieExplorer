@@ -14,7 +14,7 @@ public class MovieService
 
     public async Task<List<Movie>> GetMoviesByGenreAsync(int genreId)
     {
-        return await _movieRepository.GetMoviesByGenreAsync();
+        return await _movieRepository.GetMoviesByGenreAsync(genreId);
     }
 
     public async Task<Movie?> GetMovieByIdAync(int movieId)

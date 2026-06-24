@@ -4,7 +4,7 @@ namespace MovieExplorer.Domain.Interfaces;
 
 public interface IMovieRepository
 {
-    Task<List<Movie>> GetMoviesByGenreAsync();
+    Task<List<Movie>> GetMoviesByGenreAsync(int genreId);
     
     Task<Movie> GetMovieByIdAsync(int movieId);
 
