@@ -1,7 +1,16 @@
+using MovieExplorer.Infrastructure;
+using MovieExplorer.Domain.Interfaces;
+using MovieExplorer.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.Configure<TmdbOptions>(builder.Configuration.GetSection("TmdbOptions"));
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<IMovieRepository, TmdbMovieRepository>();
 
 var app = builder.Build();
 
