@@ -12,8 +12,10 @@ builder.Services.Configure<TmdbOptions>(builder.Configuration.GetSection("Tmdb")
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<IMovieRepository, TmdbMovieRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
 builder.Services.AddScoped<MovieService>();
+builder.Services.AddScoped<GenreService>();
 
 var app = builder.Build();
 
