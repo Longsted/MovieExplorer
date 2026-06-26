@@ -12,4 +12,10 @@ public class TmdbMovieDto
     
     [JsonPropertyName("poster_path")]
     public string? PosterPath { get; set; }
+    
+    [JsonPropertyName("release_date")]
+    public string ReleaseDeate { get; set; } = string.Empty;
+    
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
 }

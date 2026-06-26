@@ -12,10 +12,9 @@ public class GenresController : Controller
     {
         _genreService = genreService;
     }
-    
+
     public async Task<IActionResult> Index()
     {
-        
         var genres = await _genreService.GetGenreAsync();
         return View(genres);
     }

@@ -39,7 +39,9 @@ public class TmdbMovieRepository : IMovieRepository
         {
             Id = movie.Id,
             Title = movie.Title,
-            PosterUrl = movie.PosterPath == null ? string.Empty : $"https://image.tmdb.org/t/p/w500{movie.PosterPath}"
+            PosterUrl = movie.PosterPath == null ? string.Empty : $"https://image.tmdb.org/t/p/w500{movie.PosterPath}",
+            ReleaseYear = string.IsNullOrWhiteSpace(movie.ReleaseDeate) ? 0 : DateTime.Parse(movie.ReleaseDeate).Year
+            
         }).ToList();
     }
 

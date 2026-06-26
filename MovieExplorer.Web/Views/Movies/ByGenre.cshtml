@@ -1,11 +1,35 @@
 ﻿@model List<MovieExplorer.Domain.Entities.Movie>
 
-<h1>Movies </h1>
-
-<ul>
-@foreach (var movie in Model)
-{
-    <li>@movie.Title </li>
+@{
+    ViewData["Title"] = "movies";
 }
 
-</ul>
+<div class="container mt-4">
+
+<div class="row g-4">
+
+    @foreach (var movie in Model)
+    {
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100">
+            
+                <img src="@movie.PosterUrl"
+                     class="card-img-top"
+                     alt="@movie.Title"/>
+            
+                <div class="card-body">
+            
+                    <h5 class="card-title">
+                        @movie.Title
+                    </h5>
+            
+                    <p class="card-text">
+                        @movie.ReleaseYear
+                    </p>
+            
+                </div>
+            </div>
+        </div>
+    }
+</div>
+</div>
