@@ -1,11 +1,17 @@
 @model List<MovieExplorer.Domain.Entities.Genre>
 
-<h1>Movie Explorer</h1>
+<h1>Browse genres</h1>
 
 <ul>
 @foreach (var genre in Model)
 {
-    <li>@genre.Name </li>
-}
-
+    <li>
+        <a asp-controller="Movies"
+           asp-action="ByGenre"
+           asp-route-genreId="@genre.Id">
+            
+        </a>
+    </li>
+    }
+    
 </ul>

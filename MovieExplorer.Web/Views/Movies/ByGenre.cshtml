@@ -1,0 +1,11 @@
+﻿@model List<MovieExplorer.Domain.Entities.Movie>
+
+<h1>Movies </h1>
+
+<ul>
+@foreach (var movie in Model)
+{
+    <li>@movie.Title </li>
+}
+
+</ul>
