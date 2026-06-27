@@ -26,7 +26,7 @@ public class TmdbMovieRepository : IMovieRepository
             $"?api_key={_options.ApiKey}" +
             $"&with_genres={genreId}";
 
-        Console.WriteLine(url);
+       
         var response =
             await _httpClient.GetFromJsonAsync<TmdbMovieResponse>(url);
 
@@ -45,9 +45,41 @@ public class TmdbMovieRepository : IMovieRepository
         }).ToList();
     }
 
-    public Task<Movie> GetMovieByIdAsync(int movieId)
+    public async Task<Movie> GetMovieByIdAsync(int movieId)
     {
-        throw new NotImplementedException();
+        var url =
+            $"{_options.BaseUrl}/movie/{movieId}"+
+            $"?api_key={_options.ApiKey}";
+        
+        var response =
+           await _httpClient.GetFromJsonAsync<TmdbMovieDetailsDto>(url);
+
+        if (response == null)
+            throw new Exception("movie not found");
+
+        return new Movie
+        {
+            Id = response.Id,
+            Title = response.Title,
+            Overview = response.Overview,
+            PosterUrl = response.PosterPath == null
+                ? string.Empty
+                : $"https://image.tmdb.org/t/p/w500{response.PosterPath}",
+
+            BackdropUrl = response.BackdropPath == null
+                ? string.Empty
+                : $"https://image.tmdb.org/t/p/w500{response.BackdropPath}",
+
+            ReleaseYear = string.IsNullOrWhiteSpace(response.ReleaseDate)
+                ? 0
+                : DateTime.Parse(response.ReleaseDate).Year,
+
+            Genres = response.Genres.Select(g => new Genre
+            {
+                Id = g.Id,
+                Name = g.Name
+            }).ToList()
+        };
     }
 
     public Task<int> GetMovieCountByGenreAsync(int genreId)
