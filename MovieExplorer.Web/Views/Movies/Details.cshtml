@@ -4,50 +4,82 @@
     ViewData["Title"] = Model.Title;
 }
 
-<div class="container mt-5">
+<div class="movie-hero" style="background-image: linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.85)), url('@Model.BackdropUrl');">
 
-    <div class="row g-5">
+    <div class="container">
 
-        <div class="col-md-4">
+        <div class="row align-items-end hero-content">
 
-            <img src="@Model.PosterUrl"
-                 class="img-fluid shadow movie-poster"
-                 alt="@Model.Title" />
+            <div class="col-md-4 col-lg-3">
 
-        </div>
-
-        <div class="col-md-8">
-
-            <h1 class="display-5 fw-bold">
-                @Model.Title
-            </h1>
-
-            <p class="text-muted fs-5">
-                @Model.ReleaseYear
-            </p>
-
-            <div class="mb-3">
-
-                @foreach (var genre in Model.Genres)
-                {
-                    <span class="badge text-bg-secondary me-1">
-                        @genre
-                    </span>
-                }
+                <img src="@Model.PosterUrl"
+                     class="img-fluid shadow-lg movie-poster"
+                     alt="@Model.Title" />
 
             </div>
 
-            <hr />
+            <div class="col-md-8 col-lg-9 text-white">
 
-            <h4>Overview</h4>
+                <h1 class="display-3 fw-bold mb-3">
+                    @Model.Title
+                </h1>
+
+                <p class="fs-5 text-light">
+                    @Model.ReleaseYear
+                </p>
+
+                <div class="mb-4">
+
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <span class="badge text-bg-danger me-2 mb-2">
+                            @genre
+                        </span>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="container py-5">
+
+    <div class="row">
+
+        <div class="col-lg-9">
+
+            <h3>Overview</h3>
 
             <p class="lead movie-overview">
                 @Model.Overview
             </p>
 
-            <button class="btn btn-primary btn-lg mt-3">
-                Add to Wishlist
-            </button>
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h5>Your Collection</h5>
+
+                    <p class="text-muted">
+                        Save this movie to your wishlist.
+                    </p>
+
+                    <button class="btn btn-primary w-100">
+                        Add to Wishlist
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
 
