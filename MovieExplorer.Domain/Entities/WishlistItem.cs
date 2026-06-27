@@ -2,9 +2,14 @@
 
 public class WishlistItem
 {
+    
+    public int Id { get; set; }
+    
     public int MovieId { get; set; }
     
     public string Title { get; set; } = String.Empty;
     
     public string PosterUrl { get; set; } = String.Empty;
+    
+    public int ReleaseYear { get; set; }
 }

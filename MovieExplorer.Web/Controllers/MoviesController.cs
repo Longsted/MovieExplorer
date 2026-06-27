@@ -26,7 +26,8 @@ public class MoviesController : Controller
 
     public async Task<IActionResult> Details(int movieId)
     {
-        var movie = await _movieService.GetMovieByIdAync(movieId);
+        var movie = await _movieService.GetMovieByIdAsync(movieId);
+        
         
         var viewModel = new MovieDetailsViewModel
         {

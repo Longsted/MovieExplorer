@@ -2,6 +2,8 @@ using MovieExplorer.Application.Services;
 using MovieExplorer.Infrastructure;
 using MovieExplorer.Domain.Interfaces;
 using MovieExplorer.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using MovieExplorer.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +13,22 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<TmdbOptions>(builder.Configuration.GetSection("Tmdb"));
 builder.Services.AddHttpClient();
 
+
+//database
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
 builder.Services.AddScoped<IMovieRepository, TmdbMovieRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IWishlistRepository, Wishlistrepository>();
+
+
 
 builder.Services.AddScoped<MovieService>();
 builder.Services.AddScoped<GenreService>();
+builder.Services.AddScoped<WishlistService>();
 
 var app = builder.Build();
 
