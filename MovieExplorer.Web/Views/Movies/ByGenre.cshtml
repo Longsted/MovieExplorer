@@ -1,53 +1,72 @@
-﻿@model List<MovieExplorer.Domain.Entities.Movie>
+﻿@model MovieExplorer.Web.ViewModels.GenreViewModel
 
-@{
-    ViewData["Title"] = "Movies";
-}
+<h1>@Model.GenreName</h1>
 
-<div class="container mt-4">
-    
-    <h1 class="mb-1">Movies</h1>
+<div class="row g-4" id="movieContainer">
 
-    <p class="text-muted mb-4">
-        @Model.Count movies found
-    </p>
-
-    <div class="row g-4">
-
-        @foreach (var movie in Model)
-        {
-            <div class="col-sm-6 col-md-4 col-lg-3">
-
-                <a asp-controller="Movies"
-                   asp-action="Details"
-                   asp-route-movieId="@movie.Id"
-                   class="text-decoration-none text-dark">
-
-                    <div class="card h-100 shadow-sm">
-
-                        <img src="@movie.PosterUrl"
-                             class="card-img-top"
-                             alt="@movie.Title"/>
-
-                        <div class="card-body shadow-sm" style="cursor:pointer;">
-
-                            <h5 class="card-title">
-                                @movie.Title
-                            </h5>
-
-                            <p class="card-text text-muted">
-                                @movie.ReleaseYear
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </a>
-
-            </div>
-        }
-
-    </div>
+    <partial name="_MovieCards"
+             model="Model.Movies" />
 
 </div>
+
+<div class="text-center mt-4">
+
+    <button id="loadMoreBtn"
+            class="btn btn-outline-primary">
+        Load More
+    </button>
+
+</div>
+
+// TODO:
+// TMDB can return duplicate movies across pages.
+// We skip duplicates locally to avoid showing the same movie twice.
+
+@section Scripts
+{
+    <script>
+
+        let currentPage = @Model.CurrentPage;
+
+        const genreId = @Model.GenreId;
+
+        const loadedMovieIds = new Set();
+
+        document
+            .querySelectorAll("[data-movie-id]")
+            .forEach(movie => loadedMovieIds.add(movie.dataset.movieId));
+
+        document
+            .getElementById("loadMoreBtn")
+            .addEventListener("click", async () => {
+
+                currentPage++;
+
+                const response = await fetch(
+                    `/Movies/LoadMore?genreId=${genreId}&page=${currentPage}`);
+
+                const html = await response.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+
+                const newMovies = doc.querySelectorAll("[data-movie-id]");
+                const movieContainer = document.getElementById("movieContainer");
+
+                newMovies.forEach(movie => {
+
+                    const movieId = movie.dataset.movieId;
+
+                    if (!loadedMovieIds.has(movieId)) {
+
+                        loadedMovieIds.add(movieId);
+                        movieContainer.appendChild(movie);
+
+                    }
+
+                });
+
+            });
+
+    </script>
+}
