@@ -6,16 +6,40 @@
 
 <div class="container mt-5">
 
-    <h1 class="mb-2">My Wishlist</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <p class="text-muted mb-4">
-        @Model.Movies.Count movie(s) saved
-    </p>
+        <div>
+            <h1 class="mb-1">My Wishlist</h1>
+
+            <p class="text-muted mb-0">
+                @Model.Movies.Count movie(s) saved
+            </p>
+        </div>
+
+        <a asp-controller="Genres"
+           asp-action="Index"
+           class="btn btn-outline-primary">
+            Browse Movies
+        </a>
+
+    </div>
 
     @if (!Model.Movies.Any())
     {
-        <div class="alert alert-info">
-            Your wishlist is empty.
+        <div class="wishlist-empty">
+
+            <h3>Your wishlist is empty</h3>
+
+            <p class="text-muted">
+                Browse genres and save your favourite movies.
+            </p>
+
+            <a asp-controller="Genres"
+               asp-action="Index"
+               class="btn btn-primary">
+                Browse Genres
+            </a>
+
         </div>
     }
     else
@@ -28,26 +52,37 @@
 
                     <div class="card h-100 shadow-sm">
 
-                        <img src="@movie.PosterUrl"
-                             class="card-img-top"
-                             alt="@movie.Title"/>
+                        <a asp-controller="Movies"
+                           asp-action="Details"
+                           asp-route-movieId="@movie.MovieId"
+                           class="text-decoration-none text-dark">
 
-                        <div class="card-body">
+                            <img src="@movie.PosterUrl"
+                                 class="card-img-top"
+                                 alt="@movie.Title"/>
 
-                            <h5 class="card-title">
-                                @movie.Title
-                            </h5>
+                            <div class="card-body">
 
-                            <p class="card-text text-muted">
-                                @movie.ReleaseYear
-                            </p>
+                                <h5 class="card-title">
+                                    @movie.Title
+                                </h5>
 
-                            <form asp-action="Remove"
+                                <p class="card-text text-muted">
+                                    @movie.ReleaseYear
+                                </p>
+
+                            </div>
+
+                        </a>
+
+                        <div class="card-footer bg-white border-0">
+
+                            <form asp-action="RemoveItem"
                                   asp-route-id="@movie.Id"
                                   method="post">
-                               
-                               
-                                <button class="btn btn-outline-danger w-100">
+
+                                <button type="submit"
+                                        class="btn btn-outline-danger w-100">
                                     Remove
                                 </button>
 

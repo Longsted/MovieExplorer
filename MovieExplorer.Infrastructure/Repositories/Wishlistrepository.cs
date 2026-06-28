@@ -43,4 +43,14 @@ public class Wishlistrepository : IWishlistRepository
     {
         return await _dbContext.WishlistItems.AnyAsync(item => item.MovieId == movieId);
     }
+
+    public async Task RemoveByMovieAsync(int movieId)
+    {
+        var item = await _dbContext.WishlistItems.FirstOrDefaultAsync(item => item.MovieId == movieId);
+        if (item == null)
+            return;
+        
+        _dbContext.WishlistItems.Remove(item);
+        await _dbContext.SaveChangesAsync();
+    }
 }

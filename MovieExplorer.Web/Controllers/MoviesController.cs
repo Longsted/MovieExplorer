@@ -7,10 +7,13 @@ namespace MovieExplorer.Web.Controllers;
 public class MoviesController : Controller
 {
     private readonly MovieService _movieService;
+    private readonly WishlistService _wishlistService;
 
-    public MoviesController(MovieService movieService)
+    public MoviesController(MovieService movieService,
+        WishlistService wishlistService)
     {
         _movieService = movieService;
+        _wishlistService = wishlistService;
     }
 
     public async Task<IActionResult> ByGenre(int genreId)
@@ -39,7 +42,9 @@ public class MoviesController : Controller
             Genres = movie.Genres
                 .Select(g => g.Name)
                 .ToList(),
-            BackdropUrl = movie.BackdropUrl
+            BackdropUrl = movie.BackdropUrl,
+            
+            IsInWishlist = await _wishlistService.ExistsAsync(movie.Id)
             
         };
         

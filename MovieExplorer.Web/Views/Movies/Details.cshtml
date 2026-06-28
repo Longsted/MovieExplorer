@@ -1,10 +1,11 @@
 ﻿@model MovieExplorer.Web.ViewModels.MovieDetailsViewModel
 
 @{
-    ViewData["Title"] = Model.Title;
+ViewData["Title"] = Model.Title;
 }
 
-<div class="movie-hero" style="background-image: linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.85)), url('@Model.BackdropUrl');">
+<div class="movie-hero"
+     style="background-image: linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.85)), url('@Model.BackdropUrl');">
 
     <div class="container">
 
@@ -32,7 +33,7 @@
 
                     @foreach (var genre in Model.Genres)
                     {
-                        <span class="badge text-bg-danger me-2 mb-2">
+                    <span class="badge text-bg-danger me-2 mb-2">
                             @genre
                         </span>
                     }
@@ -69,21 +70,49 @@
 
                     <h5>Your Collection</h5>
 
-                    <p class="text-muted">
-                        Save this movie to your wishlist.
-                    </p>
-                    <form asp-controller="Wishlist"
-                          asp-action="Add"
-                          method="post">
-                        <input asp-for="MovieId" type="hidden"/>
-                        <input asp-for="Title" type="hidden"/>
-                        <input asp-for="PosterUrl" type="hidden"/>
-                        <input asp-for="ReleaseYear" type="hidden"/>
-                        
-                        <button type="submit" class="btn btn-primary btn-lg">
-                        Add to Wishlist
-                    </button>
-                    </form>
+                    @if (Model.IsInWishlist)
+                    {
+                        <p class="text-success small fw-semibold mb-3">
+                            ✓ Saved in your wishlist
+                        </p>
+
+                        <form asp-controller="Wishlist"
+                              asp-action="RemoveMovie"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="movieId"
+                                   value="@Model.MovieId" />
+
+                            <button type="submit"
+                                    class="btn btn-outline-danger w-100">
+                                Remove from Wishlist
+                            </button>
+
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="text-muted small mb-3">
+                            Save this movie to your wishlist.
+                        </p>
+
+                        <form asp-controller="Wishlist"
+                              asp-action="Add"
+                              method="post">
+
+                            <input asp-for="MovieId" type="hidden" />
+                            <input asp-for="Title" type="hidden" />
+                            <input asp-for="PosterUrl" type="hidden" />
+                            <input asp-for="ReleaseYear" type="hidden" />
+
+                            <button type="submit"
+                                    class="btn btn-primary w-100">
+                                Add to Wishlist
+                            </button>
+
+                        </form>
+                    }
 
                 </div>
 

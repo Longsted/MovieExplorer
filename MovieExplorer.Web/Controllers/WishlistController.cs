@@ -47,9 +47,21 @@ public class WishlistController :  Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Remove(int id)
+    public async Task<IActionResult> RemoveItem(int id)
     {
         await _wishlistService.RemoveAsync(id);
         return RedirectToAction(nameof(Index));
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RemoveMovie(int movieId)
+    {
+        await _wishlistService.RemoveByMovieIdAsync(movieId);
+
+        return RedirectToAction(
+            "Details",
+            "Movies",
+            new { movieId });
     }
 }

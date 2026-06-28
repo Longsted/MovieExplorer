@@ -39,4 +39,13 @@ public class WishlistService
     {
         await _wishlistRepository.RemoveAsync(id);
     }
+    public async Task<bool> ExistsAsync(int movieId)
+    {
+        return await _wishlistRepository.ExistsAsync(movieId);
+    }
+
+    public async Task RemoveByMovieIdAsync(int movieId)
+    {
+        await _wishlistRepository.RemoveByMovieAsync(movieId);
+    }
 }

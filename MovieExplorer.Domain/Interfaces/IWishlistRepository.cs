@@ -11,6 +11,8 @@ public interface IWishlistRepository
     Task RemoveAsync(int id);
     
     Task<bool> ExistsAsync(int id);
+    
+    Task RemoveByMovieAsync(int movieId);
 
 
 }

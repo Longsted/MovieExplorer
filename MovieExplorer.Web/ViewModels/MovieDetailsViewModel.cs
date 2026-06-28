@@ -15,4 +15,6 @@ public class MovieDetailsViewModel
     public List<string> Genres { get; set; } = [];
     
     public string BackdropUrl { get; set; } = string.Empty;
+    
+    public bool IsInWishlist { get; set; }
 }
