@@ -16,9 +16,9 @@ public class MoviesController : Controller
         _wishlistService = wishlistService;
     }
 
-    public async Task<IActionResult> ByGenre(int genreId)
+    public async Task<IActionResult> ByGenre(int genreId,int page=1)
     {
-        var movies = await _movieService.GetMoviesByGenreAsync(genreId);
+        var movies = await _movieService.GetMoviesByGenreAsync(genreId,page);
         
         //midlertidig løsning. henter senere fra genre
 

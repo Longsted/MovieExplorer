@@ -19,12 +19,13 @@ public class TmdbMovieRepository : IMovieRepository
         _options = options.Value;
     }
     
-    public async Task<List<Movie>> GetMoviesByGenreAsync(int genreId)
+    public async Task<List<Movie>> GetMoviesByGenreAsync(int genreId,int page)
     {
         var url =
             $"{_options.BaseUrl}/discover/movie" +
             $"?api_key={_options.ApiKey}" +
-            $"&with_genres={genreId}";
+            $"&with_genres={genreId}" +
+            $"&page={page}";
 
        
         var response =

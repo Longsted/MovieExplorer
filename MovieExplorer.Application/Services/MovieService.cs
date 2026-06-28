@@ -12,9 +12,9 @@ public class MovieService
         _movieRepository = movieRepository;
     }
 
-    public async Task<List<Movie>> GetMoviesByGenreAsync(int genreId)
+    public async Task<List<Movie>> GetMoviesByGenreAsync(int genreId,int page)
     {
-        return await _movieRepository.GetMoviesByGenreAsync(genreId);
+        return await _movieRepository.GetMoviesByGenreAsync(genreId,page);
     }
 
     public async Task<Movie> GetMovieByIdAsync(int movieId)
