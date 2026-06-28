@@ -31,6 +31,7 @@ public class MoviesController : Controller
         
         var viewModel = new MovieDetailsViewModel
         {
+            MovieId =  movie.Id,
             Title = movie.Title,
             ReleaseYear = movie.ReleaseYear,
             Overview = movie.Overview,

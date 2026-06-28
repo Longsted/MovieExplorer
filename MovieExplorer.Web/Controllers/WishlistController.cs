@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieExplorer.Application.Services;
+using MovieExplorer.Domain.Entities;
 using MovieExplorer.Web.ViewModels;
 
 namespace MovieExplorer.Web.Controllers;
@@ -33,8 +34,22 @@ public class WishlistController :  Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddWishlistItem(WishlistItemViewModel model)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Add(WishlistItemViewModel model)
     {
         
+        
+        await _wishlistService.AddAsync(model.MovieId, model.Title,model.PosterUrl,model.ReleaseYear);
+        return RedirectToAction(
+            "Details","Movies",
+            new{movieId = model.MovieId});
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Remove(int id)
+    {
+        await _wishlistService.RemoveAsync(id);
+        return RedirectToAction(nameof(Index));
     }
 }

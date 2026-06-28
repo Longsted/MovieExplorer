@@ -12,12 +12,21 @@ public class WishlistService
         _wishlistRepository = wishlistRepository;
     }
 
-    public async Task AddAsync(WishlistItem item)
+    public async Task AddAsync(int movieId, string title, string posterUrl, int releaseYear)
     {
-        if (await _wishlistRepository.ExistsAsync(item.MovieId))
+        if (await _wishlistRepository.ExistsAsync(movieId))
         {
             return;
         }
+
+        var item = new WishlistItem
+        {
+            MovieId = movieId,
+            Title = title,
+            PosterUrl = posterUrl,
+            ReleaseYear = releaseYear
+        };
+        
         await _wishlistRepository.AddAsync(item);
     }
 
