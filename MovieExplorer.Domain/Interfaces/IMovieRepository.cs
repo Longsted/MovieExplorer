@@ -8,7 +8,7 @@ public interface IMovieRepository
     
     Task<Movie> GetMovieByIdAsync(int movieId);
 
-    Task<int> GetMovieCountByGenreAsync(int genreId);
+    
     
     
 }

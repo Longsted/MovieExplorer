@@ -3,6 +3,7 @@ using MovieExplorer.Infrastructure;
 using MovieExplorer.Domain.Interfaces;
 using MovieExplorer.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using MovieExplorer.Application.Interfaces;
 using MovieExplorer.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,9 +27,9 @@ builder.Services.AddScoped<IWishlistRepository, Wishlistrepository>();
 
 
 
-builder.Services.AddScoped<MovieService>();
-builder.Services.AddScoped<GenreService>();
-builder.Services.AddScoped<WishlistService>();
+builder.Services.AddScoped<IMovieService ,MovieService>();
+builder.Services.AddScoped<IGenreService,GenreService>();
+builder.Services.AddScoped<IWishlistService ,WishlistService>();
 
 var app = builder.Build();
 

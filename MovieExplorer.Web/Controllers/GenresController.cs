@@ -1,14 +1,14 @@
-﻿using MovieExplorer.Application.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using MovieExplorer.Application.Interfaces;
 
 
 namespace MovieExplorer.Web.Controllers;
 
 public class GenresController : Controller
 {
-    private readonly GenreService _genreService;
+    private readonly IGenreService _genreService;
 
-    public GenresController(GenreService genreService)
+    public GenresController(IGenreService genreService)
     {
         _genreService = genreService;
     }

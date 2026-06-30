@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieExplorer.Application.Services;
+using MovieExplorer.Application.Interfaces;
 using MovieExplorer.Web.ViewModels;
 
 namespace MovieExplorer.Web.Controllers;
 
 public class MoviesController : Controller
 {
-    private readonly MovieService _movieService;
-    private readonly WishlistService _wishlistService;
+    private readonly IMovieService _movieService;
+    private readonly IWishlistService _wishlistService;
 
-    public MoviesController(MovieService movieService,
-        WishlistService wishlistService)
+    public MoviesController(IMovieService movieService,
+        IWishlistService wishlistService)
     {
         _movieService = movieService;
         _wishlistService = wishlistService;

@@ -83,8 +83,5 @@ public class TmdbMovieRepository : IMovieRepository
         };
     }
 
-    public Task<int> GetMovieCountByGenreAsync(int genreId)
-    {
-        throw new NotImplementedException();
-    }
+    
 }

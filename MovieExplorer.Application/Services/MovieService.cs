@@ -1,9 +1,10 @@
-﻿using MovieExplorer.Domain.Entities;
+﻿using MovieExplorer.Application.Interfaces;
+using MovieExplorer.Domain.Entities;
 using MovieExplorer.Domain.Interfaces;
 
 namespace MovieExplorer.Application.Services;
 
-public class MovieService
+public class MovieService : IMovieService
 {
     private readonly IMovieRepository _movieRepository;
     
@@ -22,10 +23,7 @@ public class MovieService
         return await _movieRepository.GetMovieByIdAsync(movieId);
     }
 
-    public async Task<int> GetMovieCountByGenreAsync(int genreId)
-    {
-        return await _movieRepository.GetMovieCountByGenreAsync(genreId);
-    }
+    
     
     
 }

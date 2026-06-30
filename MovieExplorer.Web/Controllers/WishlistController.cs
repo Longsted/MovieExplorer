@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieExplorer.Application.Services;
-using MovieExplorer.Domain.Entities;
+using MovieExplorer.Application.Interfaces;
 using MovieExplorer.Web.ViewModels;
 
 namespace MovieExplorer.Web.Controllers;
 
 public class WishlistController :  Controller
 {
-    private readonly WishlistService _wishlistService;
+    private readonly IWishlistService _wishlistService;
 
-    public WishlistController(WishlistService wishlistService)
+    public WishlistController(IWishlistService wishlistService)
     {
         _wishlistService = wishlistService;
     }

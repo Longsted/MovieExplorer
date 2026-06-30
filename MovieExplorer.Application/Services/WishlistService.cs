@@ -1,9 +1,10 @@
-﻿using MovieExplorer.Domain.Entities;
+﻿using MovieExplorer.Application.Interfaces;
+using MovieExplorer.Domain.Entities;
 using MovieExplorer.Domain.Interfaces;
 
 namespace MovieExplorer.Application.Services;
 
-public class WishlistService
+public class WishlistService : IWishlistService
 {
     private readonly IWishlistRepository  _wishlistRepository;
 

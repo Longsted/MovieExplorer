@@ -1,7 +1,5 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MovieExplorer.Application.Services;
-using MovieExplorer.Domain.Entities;
 using MovieExplorer.Web.Models;
 
 namespace MovieExplorer.Web.Controllers;
