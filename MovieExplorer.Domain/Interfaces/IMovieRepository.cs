@@ -4,11 +4,13 @@ namespace MovieExplorer.Domain.Interfaces;
 
 public interface IMovieRepository
 {
-    Task<List<Movie>> GetMoviesByGenreAsync(int genreId, int page);
+    Task<IReadOnlyCollection<Movie>> GetMoviesByGenreAsync(int genreId, int page);
     
     Task<Movie> GetMovieByIdAsync(int movieId);
 
-    
-    
-    
+    Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query);
+
+
+
+
 }
