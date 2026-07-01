@@ -2,5 +2,5 @@
 
 public class WishlistViewModel
 {
-    public List<WishlistItemViewModel> Movies { get; set; } = [];
+    public IReadOnlyCollection<WishlistItemViewModel> Movies { get; set; } = [];
 }

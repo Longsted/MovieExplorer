@@ -13,7 +13,7 @@ public class GenreService : IGenreService
         _genreRepository = genreRepository;
     }
 
-    public async Task<List<Genre>> GetGenreAsync()
+    public async Task<IReadOnlyCollection<Genre>> GetGenreAsync()
     {
         return await  _genreRepository.GetGenreAsync();
     }

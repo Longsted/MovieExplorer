@@ -4,7 +4,7 @@ namespace MovieExplorer.Application.Interfaces;
 
 public interface IGenreService
 {
-    public Task<List<Genre>> GetGenreAsync();
+    public Task<IReadOnlyCollection<Genre>> GetGenreAsync();
     
     
 

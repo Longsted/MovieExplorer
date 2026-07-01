@@ -20,10 +20,10 @@ public class Wishlistrepository : IWishlistRepository
        await _dbContext.SaveChangesAsync();
     }
 
-    public Task<List<WishlistItem>> GetAllAsync()
+    public async Task<IReadOnlyCollection<WishlistItem>> GetAllAsync()
     {
         var  items = _dbContext.WishlistItems.ToList();
-        return Task.FromResult(items);
+        return items;
     }
 
     public async Task RemoveAsync(int id)

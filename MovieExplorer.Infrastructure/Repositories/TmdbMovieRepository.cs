@@ -19,7 +19,7 @@ public class TmdbMovieRepository : IMovieRepository
         _options = options.Value;
     }
     
-    public async Task<List<Movie>> GetMoviesByGenreAsync(int genreId,int page)
+    public async Task<IReadOnlyCollection<Movie>> GetMoviesByGenreAsync(int genreId,int page)
     {
         var url =
             $"{_options.BaseUrl}/discover/movie" +
@@ -83,5 +83,8 @@ public class TmdbMovieRepository : IMovieRepository
         };
     }
 
-    
+    public Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query)
+    {
+        throw new NotImplementedException();
+    }
 }

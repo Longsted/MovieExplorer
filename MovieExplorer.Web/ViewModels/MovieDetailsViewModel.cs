@@ -12,7 +12,7 @@ public class MovieDetailsViewModel
 
     public string PosterUrl { get; set; } = string.Empty;
 
-    public List<string> Genres { get; set; } = [];
+    public IReadOnlyCollection<string> Genres { get; set; } = [];
     
     public string BackdropUrl { get; set; } = string.Empty;
     

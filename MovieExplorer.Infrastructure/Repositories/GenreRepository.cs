@@ -22,7 +22,7 @@ public class GenreRepository : IGenreRepository
 
       
 
-        public async Task<List<Genre>> GetGenreAsync()
+        public async Task<IReadOnlyCollection<Genre>> GetGenreAsync()
         {
             var url = 
             $"{_options.BaseUrl}/genre/movie/list" + 

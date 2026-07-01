@@ -8,7 +8,7 @@ public class GenreViewModel
 
     public string GenreName { get; set; } = string.Empty;
 
-    public List<Movie> Movies { get; set; } = [];
+    public IReadOnlyCollection<Movie> Movies { get; set; } = [];
 
     public int CurrentPage { get; set; }
 

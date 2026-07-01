@@ -13,7 +13,7 @@ public class MovieService : IMovieService
         _movieRepository = movieRepository;
     }
 
-    public async Task<List<Movie>> GetMoviesByGenreAsync(int genreId,int page)
+    public async Task<IReadOnlyCollection<Movie>> GetMoviesByGenreAsync(int genreId,int page)
     {
         return await _movieRepository.GetMoviesByGenreAsync(genreId,page);
     }

@@ -31,7 +31,7 @@ public class WishlistService : IWishlistService
         await _wishlistRepository.AddAsync(item);
     }
 
-    public async Task<List<WishlistItem>> GetAllAsync()
+    public async Task<IReadOnlyCollection<WishlistItem>> GetAllAsync()
     {
         return await _wishlistRepository.GetAllAsync();
     }

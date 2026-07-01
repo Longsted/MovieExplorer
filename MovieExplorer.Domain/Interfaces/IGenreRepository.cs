@@ -4,5 +4,5 @@ namespace MovieExplorer.Domain.Interfaces;
 
 public interface IGenreRepository
 {
-    Task<List<Genre>> GetGenreAsync();
+    Task<IReadOnlyCollection<Genre>> GetGenreAsync();
 }
