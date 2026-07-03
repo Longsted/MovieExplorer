@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieExplorer.Application.Interfaces;
+using MovieExplorer.Domain.Entities;
 using MovieExplorer.Web.ViewModels;
 
 namespace MovieExplorer.Web.Controllers;
@@ -62,5 +63,27 @@ public class MoviesController : Controller
         var movies = await _movieService.GetMoviesByGenreAsync(genreId,page);
       
         return PartialView("_MovieCards", movies);
+    }
+
+    public async Task<IActionResult> Search(string query,int page=1)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return View(new SearchViewModel
+            {
+                ErrorMessage = "Please enter a search term.",
+                Movies = Array.Empty<Movie>()
+            });
+        }
+        var searchResult = await _movieService.SearchMoviesAsync(query,page);
+        
+        var viewModel = new SearchViewModel 
+        {
+            Query = query,
+            Movies = searchResult,
+            CurrentPage = page
+        };
+        
+        return View(viewModel);
     }
 }

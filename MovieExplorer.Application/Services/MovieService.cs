@@ -23,7 +23,8 @@ public class MovieService : IMovieService
         return await _movieRepository.GetMovieByIdAsync(movieId);
     }
 
-    
-    
-    
+    public async Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query, int page)
+    {
+        return await _movieRepository.SearchMoviesAsync(query, page);
+    }
 }

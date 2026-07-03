@@ -41,7 +41,7 @@ public class TmdbMovieRepository : IMovieRepository
             Id = movie.Id,
             Title = movie.Title,
             PosterUrl = movie.PosterPath == null ? string.Empty : $"https://image.tmdb.org/t/p/w500{movie.PosterPath}",
-            ReleaseYear = string.IsNullOrWhiteSpace(movie.ReleaseDeate) ? 0 : DateTime.Parse(movie.ReleaseDeate).Year
+            ReleaseYear = string.IsNullOrWhiteSpace(movie.ReleaseDate) ? 0 : DateTime.Parse(movie.ReleaseDate).Year
             
         }).ToList();
     }
@@ -83,8 +83,42 @@ public class TmdbMovieRepository : IMovieRepository
         };
     }
 
-    public Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query)
+ 
+
+
+    public async Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query,int page=1)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return Array.Empty<Movie>();
+        }
+        query= query.Trim();
+        query = Uri.EscapeDataString(query);
+
+        var url =
+            $"{_options.BaseUrl}/search/movie?query={query}" +
+            $"&api_key={_options.ApiKey}" + 
+            $"&page={page}";
+
+        var response =
+            await _httpClient.GetFromJsonAsync <TmdbMovieResponse>(url);
+
+        if (response == null || !response.Results.Any())
+        {
+            return Array.Empty<Movie>();
+        }
+        return response.Results.Select(movie => new Movie
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                PosterUrl = movie.PosterPath == null
+                    ? string.Empty
+                    : $"https://image.tmdb.org/t/p/w500{movie.PosterPath}",
+                ReleaseYear = string.IsNullOrWhiteSpace(movie.ReleaseDate) ? 0 : DateTime.Parse(movie.ReleaseDate).Year
+            }).ToList();
+        
+        
+        
+        
     }
 }

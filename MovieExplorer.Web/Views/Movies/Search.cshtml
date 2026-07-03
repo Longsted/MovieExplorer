@@ -1,0 +1,28 @@
+﻿@model MovieExplorer.Web.ViewModels.SearchViewModel
+
+<h1>Search Results</h1>
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert alert-info">
+            @Model.ErrorMessage
+    </div>
+    }
+else if (Model.Movies.Count == 0)
+{
+    <div class="alert alert-info">
+        No movies found for "<strong>@Model.Query</strong>".
+    </div>
+}
+
+else
+{
+    <p class="text-muted">
+        Showing results for "<strong>@Model.Query</strong>"
+    </p>
+
+    <div class="row g-4">
+        <partial name="_MovieCards"
+                 model="Model.Movies" />
+    </div>
+}

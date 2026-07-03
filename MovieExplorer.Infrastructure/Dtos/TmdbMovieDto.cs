@@ -14,8 +14,7 @@ public class TmdbMovieDto
     public string? PosterPath { get; set; }
     
     [JsonPropertyName("release_date")]
-    public string ReleaseDeate { get; set; } = string.Empty;
+    public string ReleaseDate { get; set; } = string.Empty;
     
-    [JsonPropertyName("name")]
-    public string Name { get; set; } = string.Empty;
+   
 }

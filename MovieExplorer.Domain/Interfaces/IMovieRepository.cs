@@ -8,7 +8,7 @@ public interface IMovieRepository
     
     Task<Movie> GetMovieByIdAsync(int movieId);
 
-    Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query);
+    Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query,int page);
 
 
 

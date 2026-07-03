@@ -8,4 +8,5 @@ public interface IMovieService
     
     public Task<Movie> GetMovieByIdAsync(int movieId);
 
+    public Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query, int page= 1);
 }
