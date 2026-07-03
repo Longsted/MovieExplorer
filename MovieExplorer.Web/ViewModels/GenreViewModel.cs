@@ -13,4 +13,6 @@ public class GenreViewModel
     public int CurrentPage { get; set; }
 
     public int TotalPages { get; set; }
+    
+    public int TotalResults { get; set; }
 }

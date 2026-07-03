@@ -2,6 +2,7 @@
 using MovieExplorer.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
+using MovieExplorer.Domain.Models;
 using MovieExplorer.Infrastructure.Dtos;
 
 namespace MovieExplorer.Infrastructure.Repositories;
@@ -19,7 +20,7 @@ public class TmdbMovieRepository : IMovieRepository
         _options = options.Value;
     }
     
-    public async Task<IReadOnlyCollection<Movie>> GetMoviesByGenreAsync(int genreId,int page)
+    public async Task<PagedMovieResults> GetMoviesByGenreAsync(int genreId, int page)
     {
         var url =
             $"{_options.BaseUrl}/discover/movie" +
@@ -33,17 +34,23 @@ public class TmdbMovieRepository : IMovieRepository
 
         if (response == null)
         {
-            return [];
+            return new PagedMovieResults
+            {
+                Movies = Array.Empty<Movie>()
+            };
         }
-
-        return response.Results.Select(movie => new Movie
+        return new PagedMovieResults
         {
-            Id = movie.Id,
-            Title = movie.Title,
-            PosterUrl = movie.PosterPath == null ? string.Empty : $"https://image.tmdb.org/t/p/w500{movie.PosterPath}",
-            ReleaseYear = string.IsNullOrWhiteSpace(movie.ReleaseDate) ? 0 : DateTime.Parse(movie.ReleaseDate).Year
-            
-        }).ToList();
+            Movies = response.Results
+                .Select(MapMovie)
+                .ToList(),
+
+            CurrentPage = response.Page,
+            TotalPages = response.TotalPages,
+            TotalResults = response.TotalResults
+        };
+        
+
     }
 
     public async Task<Movie> GetMovieByIdAsync(int movieId)
@@ -86,11 +93,15 @@ public class TmdbMovieRepository : IMovieRepository
  
 
 
-    public async Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query,int page=1)
+    public async Task<PagedMovieResults> SearchMoviesAsync(string query, int page)
     {
         if (string.IsNullOrWhiteSpace(query))
         {
-            return Array.Empty<Movie>();
+            return new PagedMovieResults
+            {
+                Movies = Array.Empty<Movie>()
+            };
+
         }
         query= query.Trim();
         query = Uri.EscapeDataString(query);
@@ -103,22 +114,37 @@ public class TmdbMovieRepository : IMovieRepository
         var response =
             await _httpClient.GetFromJsonAsync <TmdbMovieResponse>(url);
 
-        if (response == null || !response.Results.Any())
+        if (response == null)
         {
-            return Array.Empty<Movie>();
-        }
-        return response.Results.Select(movie => new Movie
+            return new PagedMovieResults
             {
-                Id = movie.Id,
-                Title = movie.Title,
-                PosterUrl = movie.PosterPath == null
-                    ? string.Empty
-                    : $"https://image.tmdb.org/t/p/w500{movie.PosterPath}",
-                ReleaseYear = string.IsNullOrWhiteSpace(movie.ReleaseDate) ? 0 : DateTime.Parse(movie.ReleaseDate).Year
-            }).ToList();
+                Movies = Array.Empty<Movie>()
+            };
+        }
+        return new PagedMovieResults
+            {
+                Movies = response.
+                    Results.Select(MapMovie).ToList(),
+
+                CurrentPage = response.Page,
+                TotalPages = response.TotalPages,
+                TotalResults = response.TotalResults    
+            };
         
-        
-        
-        
+    }
+
+  private static Movie MapMovie(TmdbMovieDto dto)
+    {
+        return new Movie
+        {
+            Id = dto.Id,
+            Title = dto.Title,
+            PosterUrl = dto.PosterPath == null
+                ? string.Empty
+                : $"https://image.tmdb.org/t/p/w500{dto.PosterPath}",
+            ReleaseYear = string.IsNullOrWhiteSpace(dto.ReleaseDate)
+                ? 0
+                : DateTime.Parse(dto.ReleaseDate).Year
+        };
     }
 }

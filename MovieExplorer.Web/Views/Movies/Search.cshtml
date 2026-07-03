@@ -4,25 +4,91 @@
 
 @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
 {
-    <div class="alert alert-info">
-            @Model.ErrorMessage
+    <div class="alert alert-warning">
+        @Model.ErrorMessage
     </div>
-    }
+}
 else if (Model.Movies.Count == 0)
 {
     <div class="alert alert-info">
         No movies found for "<strong>@Model.Query</strong>".
     </div>
 }
-
 else
 {
     <p class="text-muted">
         Showing results for "<strong>@Model.Query</strong>"
     </p>
 
-    <div class="row g-4">
+    <div class="row g-4" id="movieContainer">
+
         <partial name="_MovieCards"
                  model="Model.Movies" />
+
     </div>
+
+    <div class="text-center mt-4">
+
+        <button id="loadMoreBtn"
+                class="btn btn-outline-primary"
+                @(Model.CurrentPage >= Model.TotalPages ? "hidden" : "")>
+            Load More
+        </button>
+
+    </div>
+}
+
+@section Scripts
+{
+    <script>
+
+        let currentPage = @Model.CurrentPage;
+        const totalPages = @Model.TotalPages;
+        const query = "@Model.Query";
+
+        const loadedMovieIds = new Set();
+
+        document
+            .querySelectorAll("[data-movie-id]")
+            .forEach(movie => loadedMovieIds.add(movie.dataset.movieId));
+
+        document
+            .getElementById("loadMoreBtn")
+            ?.addEventListener("click", async () => {
+
+                currentPage++;
+
+                const response = await fetch(
+                    `/Movies/LoadMoreSearch?query=${encodeURIComponent(query)}&page=${currentPage}`);
+
+                const html = await response.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+
+                const newMovies = doc.querySelectorAll("[data-movie-id]");
+                const movieContainer = document.getElementById("movieContainer");
+
+                newMovies.forEach(movie => {
+
+                    const movieId = movie.dataset.movieId;
+
+                    if (!loadedMovieIds.has(movieId)) {
+
+                        loadedMovieIds.add(movieId);
+                        movieContainer.appendChild(movie);
+
+                    }
+
+                });
+
+                if (currentPage >= totalPages) {
+
+                    document.getElementById("loadMoreBtn").hidden = true;
+
+                }
+
+            });
+
+    </script>
 }

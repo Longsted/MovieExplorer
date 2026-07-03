@@ -11,8 +11,8 @@ public class TmdbMovieResponse
     public IReadOnlyCollection<TmdbMovieDto> Results { get; set; } = [];
     
     [JsonPropertyName("total_pages")]
-    public int Totalpages { get; set; }
+    public int TotalPages { get; set; }
     
     [JsonPropertyName("total_results")]
-    public int Totalresults { get; set; }
+    public int TotalResults { get; set; }
 }

@@ -1,14 +1,15 @@
 ﻿using MovieExplorer.Domain.Entities;
+using MovieExplorer.Domain.Models;
 
 namespace MovieExplorer.Domain.Interfaces;
 
 public interface IMovieRepository
 {
-    Task<IReadOnlyCollection<Movie>> GetMoviesByGenreAsync(int genreId, int page);
+    Task<PagedMovieResults> GetMoviesByGenreAsync(int genreId, int page);
     
     Task<Movie> GetMovieByIdAsync(int movieId);
 
-    Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query,int page);
+    Task<PagedMovieResults> SearchMoviesAsync(string query,int page);
 
 
 

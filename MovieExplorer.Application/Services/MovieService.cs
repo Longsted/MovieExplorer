@@ -1,6 +1,7 @@
 ﻿using MovieExplorer.Application.Interfaces;
 using MovieExplorer.Domain.Entities;
 using MovieExplorer.Domain.Interfaces;
+using MovieExplorer.Domain.Models;
 
 namespace MovieExplorer.Application.Services;
 
@@ -13,7 +14,7 @@ public class MovieService : IMovieService
         _movieRepository = movieRepository;
     }
 
-    public async Task<IReadOnlyCollection<Movie>> GetMoviesByGenreAsync(int genreId,int page)
+    public async Task<PagedMovieResults> GetMoviesByGenreAsync(int genreId,int page)
     {
         return await _movieRepository.GetMoviesByGenreAsync(genreId,page);
     }
@@ -23,7 +24,7 @@ public class MovieService : IMovieService
         return await _movieRepository.GetMovieByIdAsync(movieId);
     }
 
-    public async Task<IReadOnlyCollection<Movie>> SearchMoviesAsync(string query, int page)
+    public async Task<PagedMovieResults> SearchMoviesAsync(string query, int page)
     {
         return await _movieRepository.SearchMoviesAsync(query, page);
     }
