@@ -96,6 +96,8 @@ I didn't want data access and business logic living in the same class.
 Why TMDB?
 I stumbled upon TMDB while looking for a movie API
 and thought it would be a fun way to practice working with external APIs.
+
+
 ---
 
 ## Configuration
