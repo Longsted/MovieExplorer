@@ -1,17 +1,48 @@
-@model List<MovieExplorer.Domain.Entities.Genre>
+@model IReadOnlyCollection<MovieExplorer.Domain.Entities.Genre>
 
-<h1>Browse genres</h1>
+<div class="container py-5">
 
-<ul>
-@foreach (var genre in Model)
-{
-    <li>
-        <a asp-controller="Movies"
-           asp-action="ByGenre"
-           asp-route-genreId="@genre.Id">
-            @genre.Name
-        </a>
-    </li>
-    }
-    
-</ul>
+    <div class="text-center mb-5">
+
+        <h1 class="display-4 fw-bold">
+             Discover Movies
+        </h1>
+
+        <p class="lead text-muted">
+            Looking for a specific movie?
+            Use the search bar above, or browse by genre below.
+        </p>
+
+        <span class="badge bg-primary fs-6 px-3 py-2 mt-2">
+            @Model.Count Genres Available
+        </span>
+
+        <hr class="w-25 mx-auto my-4" />
+
+        <h5 class="text-muted">
+            Or browse by genre
+        </h5>
+
+    </div>
+
+    <div class="genre-container">
+
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+
+            @foreach (var genre in Model)
+            {
+                <a asp-controller="Movies"
+                   asp-action="ByGenre"
+                   asp-route-genreId="@genre.Id"
+                   class="genre-chip">
+
+                    @genre.Name
+
+                </a>
+            }
+
+        </div>
+
+    </div>
+
+</div>

@@ -18,9 +18,6 @@
 
 </div>
 
-// TODO:
-// TMDB can return duplicate movies across pages.
-// We skip duplicates locally to avoid showing the same movie twice.
 
 @section Scripts
 {
@@ -29,7 +26,10 @@
         let currentPage = @Model.CurrentPage;
 
         const genreId = @Model.GenreId;
-
+        
+        // TMDB can return duplicate movies across pages.
+        // We skip duplicates locally to avoid showing the same movie twice.
+        
         const loadedMovieIds = new Set();
 
         document
