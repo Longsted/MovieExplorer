@@ -16,6 +16,8 @@ The project is built as a portfolio application with a focus on clean architectu
 - Search pagination
 - Responsive Bootstrap UI
 - TMDB API integration
+- User Authentication
+- Persistent wishlists
 
 ---
 
