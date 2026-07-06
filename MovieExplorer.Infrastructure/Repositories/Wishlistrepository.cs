@@ -1,15 +1,15 @@
 ﻿using MovieExplorer.Domain.Entities;
 using MovieExplorer.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using MovieExplorer.Infrastructure.Data;
+using MovieExplorer.Infrastructure.Persistence;
 
 namespace MovieExplorer.Infrastructure.Repositories;
 
 public class Wishlistrepository : IWishlistRepository
 {
-    private readonly AppDbContext _dbContext;
+    private readonly ApplicationDbContext _dbContext;
     
-    public Wishlistrepository(AppDbContext dbContext)
+    public Wishlistrepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }

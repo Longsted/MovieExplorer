@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieExplorer.Domain.Entities;
 
-namespace MovieExplorer.Infrastructure.Data;
+namespace MovieExplorer.Infrastructure.Persistence;
 
-public class AppDbContext : DbContext
+public class ApplicationDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
         
