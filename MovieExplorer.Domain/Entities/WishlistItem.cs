@@ -12,4 +12,6 @@ public class WishlistItem
     public string PosterUrl { get; set; } = String.Empty;
     
     public int ReleaseYear { get; set; }
+    
+    public string UserId { get; set; } = String.Empty;
 }

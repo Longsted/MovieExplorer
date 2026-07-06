@@ -13,9 +13,9 @@ public class WishlistService : IWishlistService
         _wishlistRepository = wishlistRepository;
     }
 
-    public async Task AddAsync(int movieId, string title, string posterUrl, int releaseYear)
+    public async Task AddAsync(string userId,int movieId, string title, string posterUrl, int releaseYear)
     {
-        if (await _wishlistRepository.ExistsAsync(movieId))
+        if (await _wishlistRepository.ExistsAsync(userId,movieId))
         {
             return;
         }
@@ -25,28 +25,29 @@ public class WishlistService : IWishlistService
             MovieId = movieId,
             Title = title,
             PosterUrl = posterUrl,
-            ReleaseYear = releaseYear
+            ReleaseYear = releaseYear,
+           UserId = userId
         };
         
-        await _wishlistRepository.AddAsync(item);
+        await _wishlistRepository.AddAsync(userId,item);
     }
 
-    public async Task<IReadOnlyCollection<WishlistItem>> GetAllAsync()
+    public async Task<IReadOnlyCollection<WishlistItem>> GetAllAsync(string userId)
     {
-        return await _wishlistRepository.GetAllAsync();
+        return await _wishlistRepository.GetAllAsync(userId);
     }
 
-    public async Task RemoveAsync(int id)
+    public async Task RemoveAsync(string userId,int id)
     {
-        await _wishlistRepository.RemoveAsync(id);
+        await _wishlistRepository.RemoveAsync(userId,id);
     }
-    public async Task<bool> ExistsAsync(int movieId)
+    public async Task<bool> ExistsAsync(string userId,int movieId)
     {
-        return await _wishlistRepository.ExistsAsync(movieId);
+        return await _wishlistRepository.ExistsAsync(userId,movieId);
     }
 
-    public async Task RemoveByMovieIdAsync(int movieId)
+    public async Task RemoveByMovieIdAsync(string userId,int movieId)
     {
-        await _wishlistRepository.RemoveByMovieAsync(movieId);
+        await _wishlistRepository.RemoveByMovieAsync(userId,movieId);
     }
 }

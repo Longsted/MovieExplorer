@@ -1,21 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieExplorer.Application.Interfaces;
 using MovieExplorer.Web.ViewModels;
 
+//Identity
+using Microsoft.AspNetCore.Identity;
+using MovieExplorer.Infrastructure.Persistence;
+
 namespace MovieExplorer.Web.Controllers;
 
+[Authorize]
 public class WishlistController :  Controller
 {
     private readonly IWishlistService _wishlistService;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private string CurrentUserId => _userManager.GetUserId(User)!;
 
-    public WishlistController(IWishlistService wishlistService)
+    public WishlistController(IWishlistService wishlistService,
+        UserManager<ApplicationUser> userManager)
     {
         _wishlistService = wishlistService;
+        _userManager = userManager;
     }
 
     public async Task<IActionResult> Index()
     {
-        var wishlist = await _wishlistService.GetAllAsync();
+       
+        var wishlist = await _wishlistService.GetAllAsync(CurrentUserId);
 
         var viewModel = new WishlistViewModel
         {
@@ -37,8 +48,7 @@ public class WishlistController :  Controller
     public async Task<IActionResult> Add(WishlistItemViewModel model)
     {
         
-        
-        await _wishlistService.AddAsync(model.MovieId, model.Title,model.PosterUrl,model.ReleaseYear);
+        await _wishlistService.AddAsync(CurrentUserId,model.MovieId, model.Title,model.PosterUrl,model.ReleaseYear);
         return RedirectToAction(
             "Details","Movies",
             new{movieId = model.MovieId});
@@ -48,7 +58,8 @@ public class WishlistController :  Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RemoveItem(int id)
     {
-        await _wishlistService.RemoveAsync(id);
+        
+        await _wishlistService.RemoveAsync(CurrentUserId,id);
         return RedirectToAction(nameof(Index));
     }
     
@@ -56,7 +67,7 @@ public class WishlistController :  Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RemoveMovie(int movieId)
     {
-        await _wishlistService.RemoveByMovieIdAsync(movieId);
+        await _wishlistService.RemoveByMovieIdAsync(CurrentUserId,movieId);
 
         return RedirectToAction(
             "Details",

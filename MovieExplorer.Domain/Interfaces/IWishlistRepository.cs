@@ -4,15 +4,15 @@ namespace MovieExplorer.Domain.Interfaces;
 
 public interface IWishlistRepository
 {
-    Task AddAsync(WishlistItem item);
+    Task AddAsync(string userId,WishlistItem item);
 
-    Task<IReadOnlyCollection<WishlistItem>> GetAllAsync();
+    Task<IReadOnlyCollection<WishlistItem>> GetAllAsync(string userId);
 
-    Task RemoveAsync(int id);
+    Task RemoveAsync(string userId,int id);
     
-    Task<bool> ExistsAsync(int id);
+    Task<bool> ExistsAsync(string userId,int id);
     
-    Task RemoveByMovieAsync(int movieId);
+    Task RemoveByMovieAsync(string userId,int movieId);
 
 
 }

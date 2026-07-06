@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MovieExplorer.Application.Interfaces;
 using MovieExplorer.Domain.Entities;
+using MovieExplorer.Infrastructure.Persistence;
 using MovieExplorer.Web.ViewModels;
 
 namespace MovieExplorer.Web.Controllers;
@@ -9,12 +11,15 @@ public class MoviesController : Controller
 {
     private readonly IMovieService _movieService;
     private readonly IWishlistService _wishlistService;
+    private readonly UserManager<ApplicationUser>  _userManager;
 
     public MoviesController(IMovieService movieService,
-        IWishlistService wishlistService)
+        IWishlistService wishlistService,
+        UserManager<ApplicationUser> userManager)
     {
         _movieService = movieService;
         _wishlistService = wishlistService;
+        _userManager =  userManager;
     }
 
     public async Task<IActionResult> ByGenre(int genreId, int page = 1)
@@ -36,9 +41,20 @@ public class MoviesController : Controller
 
     public async Task<IActionResult> Details(int movieId)
     {
+        
         var movie = await _movieService.GetMovieByIdAsync(movieId);
+        var isInWishlist = false;
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            var userId= _userManager.GetUserId(User);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                isInWishlist = await _wishlistService.ExistsAsync(userId, movieId);
+            }
 
+        }
 
+       
         var viewModel = new MovieDetailsViewModel
         {
             MovieId = movie.Id,
@@ -50,8 +66,7 @@ public class MoviesController : Controller
                 .Select(g => g.Name)
                 .ToList(),
             BackdropUrl = movie.BackdropUrl,
-
-            IsInWishlist = await _wishlistService.ExistsAsync(movie.Id)
+           IsInWishlist = isInWishlist
 
         };
 

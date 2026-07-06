@@ -14,19 +14,22 @@ public class Wishlistrepository : IWishlistRepository
         _dbContext = dbContext;
     }
     
-    public async Task AddAsync(WishlistItem item)
+    public async Task AddAsync(string userId,WishlistItem item)
     {
+        item.UserId = userId;
+        
        await _dbContext.WishlistItems.AddAsync(item);
        await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<IReadOnlyCollection<WishlistItem>> GetAllAsync()
+    public async Task<IReadOnlyCollection<WishlistItem>> GetAllAsync(string userId)
     {
-        var  items = _dbContext.WishlistItems.ToList();
+        
+        var  items = await _dbContext.WishlistItems.Where(item => item.UserId == userId).ToListAsync();
         return items;
     }
 
-    public async Task RemoveAsync(int id)
+    public async Task RemoveAsync(string userId,int id)
     {
         var item = _dbContext.WishlistItems.Find(id);
         if (item == null)
@@ -39,14 +42,14 @@ public class Wishlistrepository : IWishlistRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<bool> ExistsAsync(int movieId)
+    public async Task<bool> ExistsAsync(string userId,int movieId)
     {
-        return await _dbContext.WishlistItems.AnyAsync(item => item.MovieId == movieId);
+        return await _dbContext.WishlistItems.AnyAsync(item => item.MovieId == movieId && item.UserId == userId);
     }
 
-    public async Task RemoveByMovieAsync(int movieId)
+    public async Task RemoveByMovieAsync(string userId,int movieId)
     {
-        var item = await _dbContext.WishlistItems.FirstOrDefaultAsync(item => item.MovieId == movieId);
+        var item = await _dbContext.WishlistItems.FirstOrDefaultAsync(item => item.MovieId == movieId && item.UserId == userId);
         if (item == null)
             return;
         
