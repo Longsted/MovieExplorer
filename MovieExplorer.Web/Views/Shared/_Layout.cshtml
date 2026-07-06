@@ -37,7 +37,7 @@
 
             <div class="collapse navbar-collapse" id="navbar">
 
-                <ul class="navbar-nav ms-auto align-items-center">
+                <ul class="navbar-nav me-auto align-items-center">
 
                     <li class="nav-item">
 
@@ -46,29 +46,6 @@
                            asp-action="Index">
                             Browse Genres
                         </a>
-
-                    </li>
-
-                    <li class="nav-item mx-3">
-
-                        <form asp-controller="Movies"
-                              asp-action="Search"
-                              method="get"
-                              class="d-flex">
-
-                            <input type="search"
-                                   name="query"
-                                   value="@Context.Request.Query["query"]"
-                                   class="form-control"
-                                   placeholder="Search movies..."
-                                   aria-label="Search movies" />
-
-                            <button type="submit"
-                                    class="btn btn-outline-light ms-2">
-                                Search
-                            </button>
-
-                        </form>
 
                     </li>
 
@@ -83,6 +60,27 @@
                     </li>
 
                 </ul>
+
+                <form asp-controller="Movies"
+                      asp-action="Search"
+                      method="get"
+                      class="d-flex mx-4">
+
+                    <input type="search"
+                           name="query"
+                           value="@Context.Request.Query["query"]"
+                           class="form-control"
+                           placeholder="Search movies..."
+                           aria-label="Search movies" />
+
+                    <button type="submit"
+                            class="btn btn-outline-light ms-2">
+                        Search
+                    </button>
+
+                </form>
+
+                <partial name="_LoginPartial" />
 
             </div>
 
