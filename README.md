@@ -61,8 +61,6 @@ Responsibilities:
 
 ### Planned
 
-- [ ] User authentication (ASP.NET Core Identity)
-- [ ] Persistent user wishlists
 - [ ] Movie reviews
 - [ ] Similar movies
 - [ ] Streaming providers
