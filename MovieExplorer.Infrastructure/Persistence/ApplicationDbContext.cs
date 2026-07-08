@@ -20,6 +20,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
 
     public DbSet<WishlistItem> WishlistItems => Set<WishlistItem>();
-    public DbSet<Review>? Reviews => Set<Review>();
+    public DbSet<Review> Reviews => Set<Review>();
 
 }

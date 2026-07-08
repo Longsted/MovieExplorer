@@ -1,0 +1,242 @@
+﻿@model MovieExplorer.Web.ViewModels.MovieDetailsViewModel
+
+@{
+    string Stars(int rating)
+    {
+        return new string('★', rating) + new string('☆', 5 - rating);
+    }
+}
+
+<section>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h3 class="mb-1">Reviews</h3>
+
+            <p class="text-muted mb-0">
+                <strong>@Model.AverageRating.ToString("0.0") / 5</strong>
+                ·
+                @Model.ReviewCount review@(Model.ReviewCount == 1 ? "" : "s")
+            </p>
+        </div>
+
+    </div>
+
+    @if (Model.IsAuthenticated)
+    {
+        <div class="card shadow-sm mb-5">
+
+            <div class="card-header fw-semibold">
+                @(Model.UserReview is null ? "Write a Review" : "Edit Your Review")
+            </div>
+
+            <div class="card-body">
+
+                @if (Model.UserReview is null)
+                {
+                    <form asp-controller="Review"
+                          asp-action="Add"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="MovieId"
+                               value="@Model.MovieId" />
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Title</label>
+
+                            <input class="form-control"
+                                   name="Title"
+                                   maxlength="100" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Rating</label>
+
+                            <select class="form-select"
+                                    name="Rating">
+
+                                @for (var i = 5; i >= 1; i--)
+                                {
+                                    <option value="@i">@i ★</option>
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Review</label>
+
+                            <textarea class="form-control"
+                                      rows="5"
+                                      maxlength="1000"
+                                      name="Content"></textarea>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Submit Review
+                        </button>
+
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="Review"
+                          asp-action="Update"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="Id"
+                               value="@Model.UserReview.Id" />
+
+                        <input type="hidden"
+                               name="MovieId"
+                               value="@Model.MovieId" />
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Title</label>
+
+                            <input class="form-control"
+                                   name="Title"
+                                   maxlength="100"
+                                   value="@Model.UserReview.Title" />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Rating</label>
+
+                            <select class="form-select"
+                                    name="Rating">
+
+                                @for (var i = 5; i >= 1; i--)
+                                {
+                                    if (Model.UserReview.Rating == i)
+                                    {
+                                        <option selected value="@i">@i ★</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i ★</option>
+                                    }
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">Review</label>
+
+                            <textarea class="form-control"
+                                      rows="5"
+                                      maxlength="1000"
+                                      name="Content">@Model.UserReview.Content</textarea>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Update Review
+                        </button>
+
+                    </form>
+                }
+
+            </div>
+
+        </div>
+    }
+
+    <h4 class="mb-4">Community Reviews</h4>
+
+    @if (!Model.Reviews.Any())
+    {
+        <div class="alert alert-light border">
+            No reviews yet. Be the first to review this movie.
+        </div>
+    }
+    else
+    {
+        @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
+        {
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h5 class="mb-1">
+                                @review.Title
+                            </h5>
+
+                            <div class="text-warning fs-5">
+                                @Stars(review.Rating)
+                            </div>
+
+                        </div>
+
+                        <small class="text-muted text-end">
+
+                            <strong>@review.Username</strong>
+
+                            <br />
+
+                            @review.CreatedAt.ToString("dd MMM yyyy")
+
+                        </small>
+
+                    </div>
+
+                    <hr />
+
+                    <p class="mb-3">
+                        @review.Content
+                    </p>
+
+                    @if (review.IsOwner)
+                    {
+                        <form asp-controller="Review"
+                              asp-action="Remove"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="reviewId"
+                                   value="@review.Id" />
+
+                            <input type="hidden"
+                                   name="movieId"
+                                   value="@Model.MovieId" />
+
+                            <button type="submit"
+                                    class="btn btn-outline-danger btn-sm">
+                                Delete Review
+                            </button>
+
+                        </form>
+                    }
+
+                </div>
+
+            </div>
+        }
+    }
+
+</section>

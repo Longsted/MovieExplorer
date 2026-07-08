@@ -1,7 +1,7 @@
 ﻿@model MovieExplorer.Web.ViewModels.MovieDetailsViewModel
 
 @{
-ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Title;
 }
 
 <div class="movie-hero"
@@ -33,7 +33,7 @@ ViewData["Title"] = Model.Title;
 
                     @foreach (var genre in Model.Genres)
                     {
-                    <span class="badge text-bg-danger me-2 mb-2">
+                        <span class="badge text-bg-danger me-2 mb-2">
                             @genre
                         </span>
                     }
@@ -59,6 +59,10 @@ ViewData["Title"] = Model.Title;
             <p class="lead movie-overview">
                 @Model.Overview
             </p>
+
+            <hr class="my-5" />
+
+            <partial name="_Reviews" model="Model" />
 
         </div>
 

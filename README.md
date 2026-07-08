@@ -18,6 +18,7 @@ The project is built as a portfolio application with a focus on clean architectu
 - TMDB API integration
 - User Authentication
 - Persistent wishlists
+- [ ] Movie reviews
 
 ---
 
@@ -63,7 +64,6 @@ Responsibilities:
 
 ### Planned
 
-- [ ] Movie reviews
 - [ ] Similar movies
 - [ ] Streaming providers
 - [ ] Unit tests

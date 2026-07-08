@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MovieExplorer.Application.Dtos;
 using MovieExplorer.Application.Interfaces;
 using MovieExplorer.Domain.Entities;
 using MovieExplorer.Infrastructure.Persistence;
@@ -11,14 +12,17 @@ public class MoviesController : Controller
 {
     private readonly IMovieService _movieService;
     private readonly IWishlistService _wishlistService;
+    private readonly IReviewService _reviewService;
     private readonly UserManager<ApplicationUser>  _userManager;
 
     public MoviesController(IMovieService movieService,
         IWishlistService wishlistService,
+        IReviewService reviewService,
         UserManager<ApplicationUser> userManager)
     {
         _movieService = movieService;
         _wishlistService = wishlistService;
+        _reviewService = reviewService;
         _userManager =  userManager;
     }
 
@@ -41,20 +45,31 @@ public class MoviesController : Controller
 
     public async Task<IActionResult> Details(int movieId)
     {
-        
         var movie = await _movieService.GetMovieByIdAsync(movieId);
+
+        var isAuthenticated = User.Identity?.IsAuthenticated == true;
         var isInWishlist = false;
-        if (User.Identity?.IsAuthenticated == true)
+        string? userId = null;
+
+        if (isAuthenticated)
         {
-            var userId= _userManager.GetUserId(User);
+            userId = _userManager.GetUserId(User);
+
             if (!string.IsNullOrEmpty(userId))
             {
                 isInWishlist = await _wishlistService.ExistsAsync(userId, movieId);
             }
-
         }
 
-       
+        var reviews = await _reviewService.GetByMovieAsync(movieId);
+
+        ReviewDto? userReview = null;
+
+        if (!string.IsNullOrEmpty(userId))
+        {
+            userReview = await _reviewService.GetByMovieAndUserAsync(movieId, userId);
+        }
+
         var viewModel = new MovieDetailsViewModel
         {
             MovieId = movie.Id,
@@ -66,8 +81,23 @@ public class MoviesController : Controller
                 .Select(g => g.Name)
                 .ToList(),
             BackdropUrl = movie.BackdropUrl,
-           IsInWishlist = isInWishlist
 
+            IsAuthenticated = isAuthenticated,
+            IsInWishlist = isInWishlist,
+
+            Reviews = reviews
+                .Select(r => MapReview(r, userId))
+                .ToList(),
+
+            UserReview = userReview is null
+                ? null
+                : MapReview(userReview, userId),
+
+            ReviewCount = reviews.Count,
+
+            AverageRating = reviews.Any()
+                ? reviews.Average(r => r.Rating)
+                : 0
         };
 
         return View(viewModel);
@@ -113,5 +143,22 @@ public class MoviesController : Controller
         };
 
         return View(viewModel);
+    }
+    
+    private static ReviewViewModel MapReview(
+        ReviewDto dto,
+        string? currentUserId)
+    {
+        return new ReviewViewModel
+        {
+            Id = dto.Id,
+            MovieId = dto.MovieId,
+            Username = dto.UserName,
+            Title = dto.Title,
+            Content = dto.Content,
+            Rating = dto.Rating,
+            CreatedAt = dto.CreatedAt,
+            IsOwner = dto.UserId == currentUserId
+        };
     }
 }

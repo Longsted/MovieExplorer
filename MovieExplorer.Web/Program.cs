@@ -42,13 +42,14 @@ builder.Services
 builder.Services.AddScoped<IMovieRepository, TmdbMovieRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IWishlistRepository, Wishlistrepository>();
-
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 
 builder.Services.AddScoped<IMovieService ,MovieService>();
 builder.Services.AddScoped<IGenreService,GenreService>();
 builder.Services.AddScoped<IWishlistService ,WishlistService>();
 builder.Services.AddScoped<IUserLookupService, UserLookupService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 var app = builder.Build();
 

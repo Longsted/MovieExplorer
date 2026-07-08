@@ -17,4 +17,14 @@ public class MovieDetailsViewModel
     public string BackdropUrl { get; set; } = string.Empty;
     
     public bool IsInWishlist { get; set; }
+    
+    public double  AverageRating { get; set; }
+    
+    public int ReviewCount { get; set; }
+    
+    public IReadOnlyCollection<ReviewViewModel> Reviews { get; set; } = [];
+
+    public ReviewViewModel? UserReview { get; set; }
+    
+    public bool IsAuthenticated { get; set; }
 }
