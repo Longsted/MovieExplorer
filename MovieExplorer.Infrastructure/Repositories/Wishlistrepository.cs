@@ -31,8 +31,8 @@ public class Wishlistrepository : IWishlistRepository
 
     public async Task RemoveAsync(string userId,int id)
     {
-        var item = _dbContext.WishlistItems.Find(id);
-        if (item == null)
+        var item = await _dbContext.WishlistItems.FirstOrDefaultAsync(x => x.Id == id &&  x.UserId == userId);
+        if (item is null)
         {
             return;
         }
@@ -50,7 +50,7 @@ public class Wishlistrepository : IWishlistRepository
     public async Task RemoveByMovieAsync(string userId,int movieId)
     {
         var item = await _dbContext.WishlistItems.FirstOrDefaultAsync(item => item.MovieId == movieId && item.UserId == userId);
-        if (item == null)
+        if (item is null)
             return;
         
         _dbContext.WishlistItems.Remove(item);
