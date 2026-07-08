@@ -1,8 +1,9 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Extensions.Options;
+
 using MovieExplorer.Domain.Entities;
 using MovieExplorer.Domain.Interfaces;
-using MovieExplorer.Infrastructure.Dtos;
+using MovieExplorer.Infrastructure.External.Dtos;
 
 namespace MovieExplorer.Infrastructure.Repositories;
 

@@ -3,7 +3,7 @@ using MovieExplorer.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using MovieExplorer.Domain.Models;
-using MovieExplorer.Infrastructure.Dtos;
+using MovieExplorer.Infrastructure.External.Dtos;
 
 namespace MovieExplorer.Infrastructure.Repositories;
 

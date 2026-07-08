@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MovieExplorer.Infrastructure.Dtos;
+namespace MovieExplorer.Infrastructure.External.Dtos;
 
 public class TmdbMovieResponse
 {

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using MovieExplorer.Application.Interfaces;
 using MovieExplorer.Infrastructure.Persistence;
+using MovieExplorer.Infrastructure.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,7 @@ builder.Services.AddScoped<IWishlistRepository, Wishlistrepository>();
 builder.Services.AddScoped<IMovieService ,MovieService>();
 builder.Services.AddScoped<IGenreService,GenreService>();
 builder.Services.AddScoped<IWishlistService ,WishlistService>();
+builder.Services.AddScoped<IUserLookupService, UserLookupService>();
 
 var app = builder.Build();
 

@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
+      <ProjectReference Include="..\MovieExplorer.Application\MovieExplorer.Application.csproj" />
       <ProjectReference Include="..\MovieExplorer.Domain\MovieExplorer.Domain.csproj" />
     </ItemGroup>
 

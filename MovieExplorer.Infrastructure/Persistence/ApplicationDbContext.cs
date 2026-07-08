@@ -12,6 +12,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<Review>().HasIndex(r => new{r.MovieId, r.UserId}).IsUnique();
+    }
+
     public DbSet<WishlistItem> WishlistItems => Set<WishlistItem>();
-    
+    public DbSet<Review>? Reviews => Set<Review>();
+
 }
